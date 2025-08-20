@@ -6,8 +6,8 @@ from discord.ext import tasks
 # var (rawr)
 LASTFM_USER = os.getenv("LASTFM_USER")
 API_KEY = os.getenv("LASTFM_API_KEY")
-DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-CHANNEL_ID = os.getenv("DISCORD_CHANNEL")
+DISCORD_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 
 last_track = None
 
