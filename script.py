@@ -2,6 +2,7 @@ import os
 import requests
 import discord
 from discord.ext import tasks
+import urllib.parse
 
 # var (rawr)
 LASTFM_USER = os.getenv("LASTFM_USER")
@@ -21,12 +22,25 @@ def get_last_track():
     if track['image'] and track['image'][-1]['#text']:
         image_url = track['image'][-1]['#text']
 
+    artist = track['artist']['#text']
+    name = track['name']
+    album = track['album']['#text']
+
+    # epic url moment
+    artist_url_enc = urllib.parse.quote(artist, safe='')
+    track_url_enc = urllib.parse.quote(name, safe='')
+    # track and artist sigma alpha male
+    lastfm_track_url = f"https://www.last.fm/music/{artist_url_enc}/_/{track_url_enc}"
+    lastfm_artist_url = f"https://www.last.fm/music/{artist_url_enc}"
+
     return {
-        "name": track['name'],
-        "artist": track['artist']['#text'],
-        "album": track['album']['#text'],
+        "name": name,
+        "artist": artist,
+        "album": album,
         "image": image_url,
-        "nowplaying": "@attr" in track and "nowplaying" in track["@attr"]
+        "nowplaying": "@attr" in track and "nowplaying" in track["@attr"],
+        "url": lastfm_track_url,
+        "artist_url": lastfm_artist_url
     }
 
 intents = discord.Intents.default()
@@ -51,7 +65,8 @@ async def check_scrobbles():
             channel = client.get_channel(CHANNEL_ID)
             embed = discord.Embed(
                 title=track["name"],
-                description=f"By: {track['artist']}\nFrom: {track['album']}",
+                url=track["url"],
+                description=f"By: [{track['artist']}]({track['artist_url']})\nFrom: {track['album']}",
                 color=121247
             )
             if track['image']:
