@@ -51,7 +51,7 @@ async def on_ready():
     print(f"Logged in as {client.user}")
 
     # statusstatuststsaydyfjnfjnrek
-    activity = discord.Activity(type=discord.ActivityType.listening, name="moon’s lastfm scrobbles")
+    activity = discord.Activity(type=discord.ActivityType.listening, name="your music")
     await client.change_presence(activity=activity)
 
     check_scrobbles.start()
@@ -71,7 +71,7 @@ async def check_scrobbles():
             )
             if track['image']:
                 embed.set_thumbnail(url=track['image'])
-            embed.set_footer(text="From Moon's LastFM scrobbles")
+            embed.set_footer(text="From scrobbles")
             await channel.send(embed=embed)
             last_track = track
     except Exception as e:
